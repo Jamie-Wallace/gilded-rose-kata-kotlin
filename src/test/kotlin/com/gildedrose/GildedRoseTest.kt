@@ -34,6 +34,11 @@ class GildedRoseTest {
         itemHasExpectedQuality(app.items[0], 11)
     }
 
+    @Test fun `Aged brie increases in quality when sell by date past`() {
+        val app = runGildedRose(arrayOf(Item(brieItemName, 0, 0)))
+        itemHasExpectedQuality(app.items[0], 2)
+    }
+
     @Test fun `Quality of an item is never more than 50`() {
         val app = runGildedRose(arrayOf(Item(brieItemName, 5, 50)))
         itemHasExpectedQuality(app.items[0], 50)
@@ -44,14 +49,19 @@ class GildedRoseTest {
         itemHasExpectedQuality(app.items[0], 10)
     }
 
-    @Test fun `Backstage passes increase in quality by 2 when 6 to 10 days sell by`() {
+    @Test fun `Backstage passes increase in quality by 2 when 6 to 10 days sell in remaining`() {
         val app = runGildedRose(arrayOf(Item(backstageItemName, 8, 25)))
         itemHasExpectedQuality(app.items[0], 27)
     }
 
-    @Test fun `Backstage passes increase in quality by 3 when 5 or less days sell by`() {
+    @Test fun `Backstage passes increase in quality by 3 when 5 or less days sell in remaining`() {
         val app = runGildedRose(arrayOf(Item(backstageItemName, 3, 43)))
         itemHasExpectedQuality(app.items[0], 46)
+    }
+
+    @Test fun `Backstage passes quality does not exceed 50 when 5 or less days sell in remaining`() {
+        val app = runGildedRose(arrayOf(Item(backstageItemName, 2, 48)))
+        itemHasExpectedQuality(app.items[0], 50)
     }
 
     @Test fun `Backstage passes quality is 0 when sell is less than 0`() {
