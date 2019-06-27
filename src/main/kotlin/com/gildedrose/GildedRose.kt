@@ -13,12 +13,12 @@ class GildedRose(var items: Array<Item>) {
     private fun updateItem(item: Item) {
         when {
             item.name == "Aged Brie" -> {
-                increaseQuality(item)
+                item.increaseQuality()
                 decreaseSellIn(item)
                 increaseQualityIfOutOfDate(item)
             }
             item.name == "Backstage passes to a TAFKAL80ETC concert" -> {
-                increaseQuality(item)
+                item.increaseQuality()
                 increaseQualityIfApproachingSellBy(item)
                 increaseQualityIfAlmostOutOfDate(item)
                 decreaseSellIn(item)
@@ -43,19 +43,19 @@ class GildedRose(var items: Array<Item>) {
 
     private fun increaseQualityIfAlmostOutOfDate(item: Item) {
         if (item.sellIn < 6) {
-            increaseQuality(item)
+            item.increaseQuality()
         }
     }
 
     private fun increaseQualityIfApproachingSellBy(item: Item) {
         if (item.sellIn < 11) {
-            increaseQuality(item)
+            item.increaseQuality()
         }
     }
 
     private fun increaseQualityIfOutOfDate(item: Item) {
         if (item.sellIn < 0) {
-            increaseQuality(item)
+            item.increaseQuality()
         }
     }
 
@@ -73,8 +73,9 @@ class GildedRose(var items: Array<Item>) {
         if (itemNotAtMinQuality(item)) item.quality--
     }
 
-    private fun increaseQuality(item: Item) {
-        if (itemNotAtMaxQuality(item)) item.quality++
+
+    private fun Item.increaseQuality() {
+        if (itemNotAtMaxQuality(this)) quality++
     }
 
     private fun itemNotAtMinQuality(item: Item): Boolean = item.quality > minQualityValue
