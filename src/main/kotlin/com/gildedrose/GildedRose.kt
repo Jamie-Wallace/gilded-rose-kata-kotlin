@@ -10,48 +10,48 @@ class GildedRose(var items: Array<Item>) {
 
     private fun updateItem(item: Item) {
         if (item.name == "Aged Brie") {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1
-            }
-
-            item.sellIn = item.sellIn - 1
+            increaseItemQuality(item)
+            decreaseItemSellIn(item)
 
             if (item.sellIn < 0) {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1
-                }
+                increaseItemQuality(item)
             }
         } else if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
             if (item.quality < 50) {
-                item.quality = item.quality + 1
+                item.quality++
                 if (item.sellIn < 11) {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1
-                    }
+                    increaseItemQuality(item)
                 }
 
                 if (item.sellIn < 6) {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1
-                    }
+                    increaseItemQuality(item)
                 }
             }
-            item.sellIn = item.sellIn - 1
+            decreaseItemSellIn(item)
 
             if (item.sellIn < 0) {
                 item.quality = 0
             }
+
         } else if (item.name != "Sulfuras, Hand of Ragnaros") {
-            if (item.quality > 0) {
-                item.quality = item.quality - 1
-            }
-            item.sellIn = item.sellIn - 1
+            decreaseItemQuality(item)
+            decreaseItemSellIn(item)
 
             if (item.sellIn < 0) {
-                if (item.quality > 0) {
-                    item.quality = item.quality - 1
-                }
+                decreaseItemQuality(item)
             }
         }
+    }
+
+    private fun decreaseItemSellIn(item: Item) {
+        item.sellIn--
+    }
+
+    private fun decreaseItemQuality(item: Item) {
+        if (item.quality > 0) item.quality--
+    }
+
+    private fun increaseItemQuality(item: Item) {
+        if (item.quality < 50) item.quality++
     }
 }
