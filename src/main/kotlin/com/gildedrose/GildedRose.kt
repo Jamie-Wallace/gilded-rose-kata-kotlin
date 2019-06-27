@@ -1,6 +1,8 @@
 package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
+    private val minQualityValue = 0
+    private val maximumQualityValue = 50
 
     fun updateQuality() {
         for (item in items) {
@@ -9,53 +11,75 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun updateItem(item: Item) {
-        if (item.name == "Aged Brie") {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1
+        when {
+            item.name == "Aged Brie" -> {
+                increaseQuality(item)
+                decreaseSellIn(item)
+                increaseQualityIfOutOfDate(item)
             }
-
-            item.sellIn = item.sellIn - 1
-
-            if (item.sellIn < 0) {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1
-                }
+            item.name == "Backstage passes to a TAFKAL80ETC concert" -> {
+                increaseQuality(item)
+                increaseQualityIfApproachingSellBy(item)
+                increaseQualityIfAlmostOutOfDate(item)
+                decreaseSellIn(item)
+                zeroQualityIfOutOfDate(item)
             }
-        } else if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1
-                if (item.sellIn < 11) {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1
-                    }
-                }
+            item.name == "Sulfuras, Hand of Ragnaros" -> {
 
-                if (item.sellIn < 6) {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1
-                    }
-                }
             }
-            item.sellIn = item.sellIn - 1
-
-            if (item.sellIn < 0) {
-                item.quality = 0
-            }
-        } else if (item.name == "Sulfuras, Hand of Ragnaros") {
-
-        } else {
-            if (item.quality > 0) {
-                item.quality = item.quality - 1
-            }
-            item.sellIn = item.sellIn - 1
-
-            if (item.sellIn < 0) {
-                if (item.quality > 0) {
-                    item.quality = item.quality - 1
-                }
+            else -> {
+                decreaseQuality(item)
+                decreaseSellIn(item)
+                decreaseQualityIfOutOfDate(item)
             }
         }
     }
+
+    private fun zeroQualityIfOutOfDate(item: Item) {
+        if (item.sellIn < 0) {
+            item.quality = 0
+        }
+    }
+
+    private fun increaseQualityIfAlmostOutOfDate(item: Item) {
+        if (item.sellIn < 6) {
+            increaseQuality(item)
+        }
+    }
+
+    private fun increaseQualityIfApproachingSellBy(item: Item) {
+        if (item.sellIn < 11) {
+            increaseQuality(item)
+        }
+    }
+
+    private fun increaseQualityIfOutOfDate(item: Item) {
+        if (item.sellIn < 0) {
+            increaseQuality(item)
+        }
+    }
+
+    private fun decreaseQualityIfOutOfDate(item: Item) {
+        if (item.sellIn < 0) {
+            decreaseQuality(item)
+        }
+    }
+
+    private fun decreaseSellIn(item: Item) {
+        item.sellIn = item.sellIn - 1
+    }
+
+    private fun decreaseQuality(item: Item) {
+        if (itemNotAtMinQuality(item)) item.quality--
+    }
+
+    private fun increaseQuality(item: Item) {
+        if (itemNotAtMaxQuality(item)) item.quality++
+    }
+
+    private fun itemNotAtMinQuality(item: Item): Boolean = item.quality > minQualityValue
+
+    private fun itemNotAtMaxQuality(item: Item): Boolean = item.quality < maximumQualityValue
 }
 
 
