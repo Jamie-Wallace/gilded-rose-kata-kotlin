@@ -2,18 +2,11 @@ package com.gildedrose
 
 class ItemFactory {
     companion object {
-        fun createItem(itemType: ItemType, item: Item): GildedRoseItem = when (itemType) {
-            ItemType.BRIE -> object: GildedRoseItem {
-                override val item: Item = item
-                override fun update() {
-                    item.increaseQuality()
-                    item.decreaseSellIn()
-                    item.increaseQualityIfOutOfDate()
-                }
-
-            }
-            ItemType.PASS -> TODO()
-            ItemType.SULFURAS -> TODO()
+        fun createItem(item: Item): GildedRoseItem = when (item.name) {
+            "Aged Brie" -> AgedBrie(item)
+            "Backstage passes to a TAFKAL80ETC concert" -> BackstagePass(item)
+            "Sulfuras, Hand of Ragnaros" -> Sulfuras(item)
+            else -> GeneralItem(item)
         }
     }
 }
