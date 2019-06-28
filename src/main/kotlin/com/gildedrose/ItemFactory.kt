@@ -6,7 +6,9 @@ class ItemFactory {
             ItemType.BRIE -> object: GildedRoseItem {
                 override val item: Item = item
                 override fun update() {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    item.increaseQuality()
+                    item.decreaseSellIn()
+                    item.increaseQualityIfOutOfDate()
                 }
 
             }
